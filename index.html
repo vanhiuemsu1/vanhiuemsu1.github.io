@@ -17,8 +17,8 @@
       height: 30px;
       background: url('dao.png') no-repeat center/contain;
       opacity: 0.8;
-      pointer-events: none;
-      animation: fall 5s linear infinite;
+      pointer-events: all; /* Cho phép người dùng nhấp vào */
+      animation: fall linear infinite;
     }
     @keyframes fall {
       0% {
@@ -47,19 +47,20 @@
       petal.classList.add('petal');
       petal.style.left = Math.random() * 100 + 'vw';
       petal.style.animationDuration = Math.random() * 3 + 5 + 's';
-
-      // Thêm hiệu ứng tan biến khi bấm vào
-      petal.addEventListener('click', function() {
-        petal.style.animation = 'disappear 1s forwards';
-        setTimeout(() => petal.remove(), 1);
+      petal.style.animationName = 'fall';
+      
+      // Chỉ cánh hoa được bấm vào sẽ biến mất
+      petal.addEventListener('click', function(event) {
+        event.target.style.animation = 'disappear 1s forwards'; 
+        setTimeout(() => event.target.remove(), 1); // Sau khi hoàn thành animation, cánh hoa sẽ được xoá
       });
 
       document.body.appendChild(petal);
 
-      // Xóa cánh hoa khi rơi hết màn hình
+      // Xoá cánh hoa sau khi rơi hết màn hình
       setTimeout(() => {
         petal.remove();
-      }, 8000);
+      }, parseFloat(petal.style.animationDuration) * 1000); // Thời gian rơi kết thúc = animationDuration
     }
 
     // Tạo cánh hoa rơi liên tục
